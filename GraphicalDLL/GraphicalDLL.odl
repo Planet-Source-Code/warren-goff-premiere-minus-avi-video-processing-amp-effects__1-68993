@@ -1,0 +1,788 @@
+// Ok, here is the ODL code.
+// This uuid has been gerenated by guidgen.exe (look at tools in MS Studio directorie.
+// You'll see at this code that some parameters has different type cast.
+// e.g. HDC... if you use HDC in this code, VB will not recognize and will fail.
+// HDC is a handle with integer values, so, I put HDC as int and VB will identify like
+// long variable.
+// As HDC, HBITMAP is the same thing, and LPTSTR will be LPSTR, ok?
+
+// This code is not difficult to understand, this code will only help you at Object
+// Browser in VB enviroment, ok?
+
+[
+	uuid (632B0400-67B3-11d8-9754-00E07DCD4C0F),
+	helpstring ("GraphicalDLL: Image Effects for Visual Basic"),
+	version (1.0)
+]
+
+library GraphicalDLL
+{
+	typedef enum enHistogram
+	{
+		HST_RED		= 1,
+		HST_GREEN	= 2,
+		HST_BLUE	= 4,
+		HST_COLOR	= 7,
+		HST_GRAY	= 8
+	} Histogram;
+
+	typedef enum enBlendModes
+	{
+		BLM_AVERAGE	= 1,
+		BLM_MULTIPLY,
+		BLM_SCREEN,
+		BLM_DARKEN,
+		BLM_LIGHTEN,
+		BLM_DIFFERENCE,
+		BLM_NEGATION,
+		BLM_EXCLUSION,
+		BLM_OVERLAY,
+		BLM_HARDLIGHT,
+		BLM_SOFTLIGHT,
+		BLM_COLORDODGE,
+		BLM_COLORBURN,
+		BLM_SOFTDODGE,
+		BLM_SOFTBURN,
+		BLM_REFLECT,
+		BLM_GLOW,
+		BLM_FREEZE,
+		BLM_HEAT,
+		BLM_ADDITIVE,
+		BLM_SUBTRACTIVE,
+		BLM_INTERPOLATION,
+		BLM_STAMP,
+		BLM_XOR
+	} BlendModes;
+
+	typedef enum enGradient
+	{
+		GRAD_METALLIC = 1,
+		GRAD_GOLD,
+		GRAD_ICE
+	} Gradient;
+
+	[
+		helpstring ("All the functions to be exported by GraphicalDLL"),
+		version (1.0),
+		dllname ("GraphicalDLL.dll")
+	]
+
+	module GraphicalDLL_Functions
+	{
+		[
+			helpstring ("Function to substitute the back of an image by a defined colour"),
+			entry ("GPX_BackDropRemoval")
+		]
+		HRESULT __stdcall GPX_BackDropRemoval ([in]int		PicDestDC, 
+											   [in]int		PicSrcDC, 
+											   [in]int		SelectColor, 
+											   [in]int		SubstituteColor,
+											   [in]int		Range,
+											   [out, retval]int* Response); 
+
+		[
+			helpstring ("Function to remove the back of an image by the border colour"),
+			entry ("GPX_BackDropRemovalEx")
+		]
+		HRESULT __stdcall GPX_BackDropRemovalEx ([in]int	PicDestDC, 
+												 [in]int	PicSrcDC,
+												 [in]int	SelectColor, 
+												 [in]int	SubstituteColor,
+												 [in]int	Range, 
+												 [in]bool	Top, 
+												 [in]bool	Left, 
+												 [in]bool	Right, 
+												 [in]bool	Botton,
+												 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Sepia effect"),
+			entry ("GPX_Sepia")
+		]
+		HRESULT __stdcall GPX_Sepia ([in]int PicDestDC, 
+									 [in]int PicSrcDC,
+									 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to reduce the image to only 2 colours"),
+			entry ("GPX_ReduceTo2Colors")
+		]
+		HRESULT __stdcall GPX_ReduceTo2Colors ([in]int PicDestDC, 
+											   [in]int PicSrcDC,
+											   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to reduce the image to only 8 colours"),
+			entry ("GPX_ReduceTo8Colors")
+		]
+		HRESULT __stdcall GPX_ReduceTo8Colors ([in]int PicDestDC, 
+											   [in]int PicSrcDC,
+											   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to reduce the colours of an image"),
+			entry ("GPX_ReduceColors")
+		]
+		HRESULT __stdcall GPX_ReduceColors ([in]int	PicDestDC, 
+											[in]int	PicSrcDC,
+											[in]int	Levels,
+											[out, retval]int* Response);
+		
+		[
+			helpstring ("Function to reduce to 2 colours depending the level"),
+			entry ("GPX_Stamp")
+		]
+		HRESULT __stdcall GPX_Stamp ([in]int PicDestDC, 
+									 [in]int PicSrcDC, 
+									 [in]int Level,
+									 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the brightness"),
+			entry ("GPX_Brightness")
+		]
+		HRESULT __stdcall GPX_Brightness ([in]int PicDestDC, 
+										  [in]int PicSrcDC, 
+										  [in]int Value,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the rock effect"),
+			entry ("GPX_Rock")
+		]
+		HRESULT __stdcall GPX_Rock ([in]int PicDestDC, 
+									[in]int	PicSrcDC,  
+									[in]int	Value,
+									[out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the sharpening"),
+			entry ("GPX_Sharpening")
+		]
+		HRESULT __stdcall GPX_Sharpening ([in]int	PicDestDC, 
+										  [in]int	PicSrcDC,  
+										  [in]float	Value,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the ambient light"),
+			entry ("GPX_AmbientLight")
+		]
+		HRESULT __stdcall GPX_AmbientLight ([in]int	PicDestDC, 
+											[in]int	PicSrcDC, 
+											[in]int	AmbientColor, 
+											[in]int	Intensity,
+											[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the AntiAlias effect"),
+			entry ("GPX_AntiAlias")
+		]
+		HRESULT __stdcall GPX_AntiAlias ([in]int PicDestDC, 
+										 [in]int PicSrcDC, 
+										 [in]int Sensibility,
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Emboss effect"),
+			entry ("GPX_Emboss")
+		]
+		HRESULT __stdcall GPX_Emboss ([in]int	 PicDestDC, 
+									  [in]int	 PicSrcDC, 
+									  [in]float	 Depth,
+									  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the Gamma"),
+			entry ("GPX_Gamma")
+		]
+		HRESULT __stdcall GPX_Gamma ([in]int	PicDestDC, 
+									 [in]int	PicSrcDC,  
+									 [in]float	Gamma,
+									 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the invertion"),
+			entry ("GPX_Invert")
+		]
+		HRESULT __stdcall GPX_Invert ([in]int	PicDestDC, 
+									  [in]int	PicSrcDC,  
+									  [in]int	Intensity,
+									  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Shift effect"),
+			entry ("GPX_Shift")
+		]
+		HRESULT __stdcall GPX_Shift ([in]int	PicDestDC, 
+									 [in]int	PicSrcDC, 
+									 [in]int	Shift,
+									 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Tone effect"),
+			entry ("GPX_Tone")
+		]
+		HRESULT __stdcall GPX_Tone ([in]int	PicDestDC, 
+									[in]int	PicSrcDC,  
+									[in]int	Color, 
+									[in]int	Tone,
+									[out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the contrast"),
+			entry ("GPX_Contrast")
+		]
+		HRESULT __stdcall GPX_Contrast ([in]int		PicDestDC, 
+										[in]int		PicSrcDC,  
+										[in]float	Red, 
+										[in]float	Green, 
+										[in]float	Blue,
+										[out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the gray scale"),
+			entry ("GPX_GrayScale")
+		]
+		HRESULT __stdcall GPX_GrayScale ([in]int	PicDestDC, 
+										 [in]int	PicSrcDC,  
+										 [in]int	Scale,
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the RandomicalPoints effect"),
+			entry ("GPX_RandomicalPoints")
+		]
+		HRESULT __stdcall GPX_RandomicalPoints ([in]int	PicDestDC, 
+												[in]int	PicSrcDC,  
+												[in]int	RandValue, 
+												[in]int	BackColor,
+												[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply an pseudo noise effect"),
+			entry ("GPX_ColorRandomize")
+		]
+		HRESULT __stdcall GPX_ColorRandomize ([in]int	PicDestDC, 
+											  [in]int	PicSrcDC,  
+											  [in]int	RandValue,
+											  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Solarize effect"),
+			entry ("GPX_Solarize")
+		]
+		HRESULT __stdcall GPX_Solarize ([in]int		PicDestDC, 
+										[in]int		PicSrcDC, 
+										[in]bool	Invert,
+										[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Diffuse effect"),
+			entry ("GPX_Diffuse")
+		]
+		HRESULT __stdcall GPX_Diffuse ([in]int	PicDestDC, 
+									   [in]int	PicSrcDC, 
+									   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Mosaic effect"),
+			entry ("GPX_Mosaic")
+		]
+		HRESULT __stdcall GPX_Mosaic ([in]int	PicDestDC, 
+									  [in]int	PicSrcDC,  
+									  [in]int	Size,
+									  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Melt effect"),
+			entry ("GPX_Melt")
+		]
+		HRESULT __stdcall GPX_Melt ([in]int	PicDestDC, 
+									[in]int	PicSrcDC, 
+									[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the FishEye effect"),
+			entry ("GPX_FishEye")
+		]
+		HRESULT __stdcall GPX_FishEye ([in]int PicDestDC, 
+									   [in]int PicSrcDC, 
+									   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Swirl effect"),
+			entry ("GPX_Swirl")
+		]
+		HRESULT __stdcall GPX_Swirl ([in]int	PicDestDC, 
+									 [in]int	PicSrcDC,  
+									 [in]int	Swirl,
+									 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Twirl effect"),
+			entry ("GPX_Twirl")
+		]
+		HRESULT __stdcall GPX_Twirl ([in]int	PicDestDC, 
+									 [in]int	PicSrcDC,  
+									 [in]int	Twirl,
+									 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Neon effect"),
+			entry ("GPX_Neon")
+		]
+		HRESULT __stdcall GPX_Neon ([in]int		PicDestDC, 
+									[in]int		PicSrcDC,  
+									[in]short	Intensity, 
+									[in]short	BW,
+									[out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the canvas"),
+			entry ("GPX_Canvas")
+		]
+		HRESULT __stdcall GPX_Canvas ([in]int	PicDestDC, 
+									  [in]int	PicSrcDC,  
+									  [in]int	Canvas,
+									  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Waves effect"),
+			entry ("GPX_Waves")
+		]
+		HRESULT __stdcall GPX_Waves ([in]int	PicDestDC, 
+									 [in]int	PicSrcDC, 
+									 [in]int	Amplitude, 
+									 [in]int	Frequency, 
+									 [in]short	FillSides, 
+									 [in]short	Direction,
+									 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the BlockWaves effect"),
+			entry ("GPX_BlockWaves")
+		]
+		HRESULT __stdcall GPX_BlockWaves ([in]int		PicDestDC, 
+										  [in]int		PicSrcDC,  
+										  [in]short		Amplitude,
+										  [in]short		Frequency,
+										  [in]short		Mode,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the DetectBorders effect"),
+			entry ("GPX_DetectBorders")
+		]
+		HRESULT __stdcall GPX_DetectBorders ([in]int	PicDestDC, 
+											 [in]int	PicSrcDC,  
+											 [in]int	Border, 
+											 [in]int	ColorBorder, 
+											 [in]int	BGColor,
+											 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Blur effect"),
+			entry ("GPX_Blur")
+		]
+		HRESULT __stdcall GPX_Blur ([in]int	PicDestDC, 
+									[in]int	PicSrcDC, 
+									[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Relief effect"),
+			entry ("GPX_Relief")
+		]
+		HRESULT __stdcall GPX_Relief ([in]int	PicDestDC, 
+									  [in]int	PicSrcDC, 
+									  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the saturation of an image"),
+			entry ("GPX_Saturation")
+		]
+		HRESULT __stdcall GPX_Saturation ([in]int	PicDestDC, 
+										  [in]int	PicSrcDC,  
+										  [in]int	Saturation,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the FindEdges effect"),
+			entry ("GPX_FindEdges")
+		]
+		HRESULT __stdcall GPX_FindEdges ([in]int	PicDestDC, 
+										 [in]int	PicSrcDC,  
+										 [in]short	Intensity, 
+										 [in]short	BW,
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to calcule the buffer size to alloc for GPX_AsciiMorph"),
+			entry ("GPX_AllocBufferSize")
+		]
+		HRESULT __stdcall GPX_AllocBufferSize ([in]int	PicSrcDC,
+											   [out, retval]int* Response);
+		
+		[
+			helpstring ("Function to apply the AsciiMorph effect"),
+			entry ("GPX_AsciiMorph")
+		]
+		HRESULT __stdcall GPX_AsciiMorph ([in]		int		PicSrcDC,  
+										  [in, out]	LPSTR	sBuffer,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to adjust the hue of an image"),
+			entry ("GPX_Hue")
+		]
+		HRESULT __stdcall GPX_Hue ([in]int	PicDestDC, 
+								   [in]int	PicSrcDC,  
+								   [in]int	Hue,
+								   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the AlphaBlend effect"),
+			entry ("GPX_AlphaBlend")
+		]
+		HRESULT __stdcall GPX_AlphaBlend ([in]int	PicDestDC, 
+										  [in]int	PicSrcDC_1,
+										  [in]int	PicSrcDC_2,  
+										  [in]int	Alpha,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the 3D effect"),
+			entry ("GPX_Make3DEffect")
+		]
+		HRESULT __stdcall GPX_Make3DEffect ([in]int	PicDestDC, 
+											[in]int	PicSrcDC,  
+											[in]int	Normal,
+											[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the FourCorners effect"),
+			entry ("GPX_FourCorners")
+		]
+		HRESULT __stdcall GPX_FourCorners ([in]int	PicDestDC, 
+										   [in]int	PicSrcDC, 
+										   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Caricature effect"),
+			entry ("GPX_Caricature")
+		]
+		HRESULT __stdcall GPX_Caricature ([in]int	PicDestDC, 
+										  [in]int	PicSrcDC, 
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Tile effect"),
+			entry ("GPX_Tile")
+		]
+		HRESULT __stdcall GPX_Tile ([in]int	PicDestDC, 
+									[in]int	PicSrcDC, 
+									[in]int	WSize, 
+									[in]int	HSize, 
+									[in]int	Random,
+									[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Roll effect"),
+			entry ("GPX_Roll")
+		]
+		HRESULT __stdcall GPX_Roll ([in]int	PicDestDC, 
+									[in]int	PicSrcDC, 
+									[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the SmartBlur effect"),
+			entry ("GPX_SmartBlur")
+		]
+		HRESULT __stdcall GPX_SmartBlur ([in]int	PicDestDC, 
+										 [in]int	PicSrcDC, 
+										 [in]int	Sensibility,
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the AdvancedBlur effect"),
+			entry ("GPX_AdvancedBlur")
+		]
+		HRESULT __stdcall GPX_AdvancedBlur ([in]int		PicDestDC, 
+											[in]int		PicSrcDC, 
+											[in]short	Blur, 
+											[in]short	Sense, 
+											[in]bool	Smart,
+											[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the SoftnerBlur effect"),
+			entry ("GPX_SoftnerBlur")
+		]
+		HRESULT __stdcall GPX_SoftnerBlur ([in]int	PicDestDC, 
+										   [in]int	PicSrcDC, 
+										   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the MotionBlur effect"),
+			entry ("GPX_MotionBlur")
+		]
+		HRESULT __stdcall GPX_MotionBlur ([in]int		PicDestDC, 
+										  [in]int		PicSrcDC,  
+										  [in]double	Angle, 
+										  [in]int		Distance,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the ColorBalance effect"),
+			entry ("GPX_ColorBalance")
+		]
+		HRESULT __stdcall GPX_ColorBalance ([in]int		PicDestDC, 
+											[in]int		PicSrcDC,  
+											[in]short	R, 
+											[in]short	G, 
+											[in]short	B,
+											[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Fragment effect"),
+			entry ("GPX_Fragment")
+		]
+		HRESULT __stdcall GPX_Fragment ([in]int	PicDestDC, 
+										[in]int	PicSrcDC,  
+										[in]int	Distance,
+										[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the FarBlur effect"),
+			entry ("GPX_FarBlur")
+		]
+		HRESULT __stdcall GPX_FarBlur ([in]int	PicDestDC, 
+									   [in]int	PicSrcDC,  
+									   [in]int	Distance,
+									   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the RadialBlur effect"),
+			entry ("GPX_RadialBlur")
+		]
+		HRESULT __stdcall GPX_RadialBlur ([in]int	PicDestDC, 
+										  [in]int	PicSrcDC,  
+										  [in]short	Distance,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the ZoomBlur effect"),
+			entry ("GPX_ZoomBlur")
+		]
+		HRESULT __stdcall GPX_ZoomBlur ([in]int		PicDestDC, 
+										[in]int		PicSrcDC,  
+										[in]short	Distance,
+										[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the WebColors effect"),
+			entry ("GPX_WebColors")
+		]
+		HRESULT __stdcall GPX_WebColors ([in]int	PicDestDC, 
+										 [in]int	PicSrcDC, 
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Fog effect"),
+			entry ("GPX_Fog")
+		]
+		HRESULT __stdcall GPX_Fog ([in]int	PicDestDC, 
+								   [in]int	PicSrcDC, 
+								   [in]int	Fog,
+								   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the MediumTones effect"),
+			entry ("GPX_MediumTones")
+		]
+		HRESULT __stdcall GPX_MediumTones ([in]int	PicDestDC, 
+										   [in]int	PicSrcDC,  
+										   [in]int	Level,
+										   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the CircularWaves effect"),
+			entry ("GPX_CircularWaves")
+		]
+		HRESULT __stdcall GPX_CircularWaves ([in]int	PicDestDC, 
+											 [in]int	PicSrcDC,  
+											 [in]short	Amplitude,
+											 [in]short	Frequency,
+											 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the CircularWavesEx effect"),
+			entry ("GPX_CircularWavesEx")
+		]
+		HRESULT __stdcall GPX_CircularWavesEx ([in]int		PicDestDC, 
+											   [in]int		PicSrcDC,  
+											   [in]short	Amplitude,
+											   [in]short	Frequency,
+											   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the PolarCoordinates effect"),
+			entry ("GPX_PolarCoordinates")
+		]
+		HRESULT __stdcall GPX_PolarCoordinates ([in]int		PicDestDC, 
+												[in]int		PicSrcDC,  
+												[in]int		Flag,
+												[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the OilPaint effect"),
+			entry ("GPX_OilPaint")
+		]
+		HRESULT __stdcall GPX_OilPaint ([in]int	PicDestDC, 
+										[in]int	PicSrcDC, 
+										[in]int	BrushSize,
+										[in]int	Smoothness,
+										[out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the FrostGlass effect"),
+			entry ("GPX_FrostGlass")
+		]
+		HRESULT __stdcall GPX_FrostGlass ([in]int	PicDestDC, 
+										  [in]int	PicSrcDC,  
+										  [in]int	Frost,
+										  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the NotePaper effect"),
+			entry ("GPX_NotePaper")
+		]
+		HRESULT __stdcall GPX_NotePaper ([in]int	PicDestDC, 
+										 [in]int	PicSrcDC,  
+										 [in]int	Sensibility,
+										 [in]int	Depth,
+										 [in]int	Graininess,
+										 [in]int	Intensity,
+										 [in]int	Forecolor,
+										 [in]int	Backcolor,
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the FishEyeEx effect"),
+			entry ("GPX_FishEyeEx")
+		]
+		HRESULT __stdcall GPX_FishEyeEx ([in]int	PicDestDC, 
+										 [in]int	PicSrcDC, 
+										 [in]double	Value,
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the RainDrops effect"),
+			entry ("GPX_RainDrops")
+		]
+		HRESULT __stdcall GPX_RainDrops ([in]int	PicDestDC, 
+										 [in]int	PicSrcDC,  
+										 [in]int	DropSize,
+										 [in]int	Amount,
+										 [in]int	Coeff,
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Cilindrical effect"),
+			entry ("GPX_Cilindrical")
+		]
+		HRESULT __stdcall GPX_Cilindrical ([in]int		PicDestDC, 
+										   [in]int		PicSrcDC,  
+										   [in]double	Value,
+										   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the UnsharpMask effect"),
+			entry ("GPX_UnsharpMask")
+		]
+		HRESULT __stdcall GPX_UnsharpMask ([in]int		PicDestDC, 
+										   [in]int		PicSrcDC,  
+										   [in]short	Blur, 
+										   [in]double	Unsharp,
+										   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to apply the Flip effect"),
+			entry ("GPX_Flip")
+		]
+		HRESULT __stdcall GPX_Flip ([in]int  PicDestDC, 
+									[in]int  PicSrcDC,
+									[in]int  Width,
+									[in]int  Height,
+									[in]bool Horizontal,
+									[in]bool Vertical,
+									[out, retval]int* Response);
+
+		[
+			helpstring ("Function to performs a bit-block transfer"),
+			entry ("GPX_BitBlt")
+		]
+		HRESULT __stdcall GPX_BitBlt ([in]int DestDC,
+									  [in]int XDest,
+									  [in]int YDest,
+									  [in]int Width,
+									  [in]int Height,
+									  [in]int SrcDC,
+									  [in]int XSrc,
+									  [in]int YSrc,
+									  [in]int RasterOp,
+									  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to stretch the histogram"),
+			entry ("GPX_StretchHistogram")
+		]
+		HRESULT __stdcall GPX_StretchHistogram ([in]int		PicDestDC, 
+												[in]int		PicSrcDC,  
+												[in]int		Flag,
+												[in]double	StretchFactor,
+											    [out, retval]int* Response);
+
+		[
+			helpstring ("Function to stretch the histogram"),
+			entry ("GPX_BlendMode")
+		]
+		HRESULT __stdcall GPX_BlendMode ([in]int	PicDestDC,
+										 [in]int	PicSrcDC_1, 
+										 [in]int	PicSrcDC_2,  
+										 [in]int	Mode,
+										 [out, retval]int* Response);
+
+		[
+			helpstring ("Function to stretch the histogram"),
+			entry ("GPX_TwirlEx")
+		]
+		HRESULT __stdcall GPX_TwirlEx ([in]int		PicDestDC, 
+									   [in]int		PicSrcDC,  
+									   [in]double	TwirlMin,
+									   [in]double	TwirlMax,
+									   [out, retval]int* Response);
+
+		[
+			helpstring ("Function to stretch the histogram"),
+			entry ("GPX_GlassBlendMode")
+		]
+		HRESULT __stdcall GPX_GlassBlendMode ([in]int		PicDestDC,
+											  [in]int		PicSrcDC_1, 
+											  [in]int		PicSrcDC_2,  
+											  [in]double	Depth,
+											  [in]int		Direction,
+											  [out, retval]int* Response);
+
+		[
+			helpstring ("Function to stretch the histogram"),
+			entry ("GPX_Metallic")
+		]
+		HRESULT __stdcall GPX_Metallic ([in]int	PicDestDC, 
+										[in]int	PicSrcDC,  
+										[in]int	Level,
+										[in]int Shift,
+										[in]int Mode,
+										[out, retval]int* Response);
+	}
+};
